@@ -27,3 +27,11 @@ void petri::Transition::activate(){
     for(auto output : this->outputs)
         output.first->nb_tokens += output.second;
 }
+
+void petri::Transition::operator()(){
+    this->activate();
+}
+
+petri::Transition::operator bool(){
+    return this->is_activable();
+}
