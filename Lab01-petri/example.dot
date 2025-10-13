@@ -1,0 +1,20 @@
+digraph Petri {
+
+      overlap=scale
+	  
+      /* nodes */
+      
+      transition1 [label="turns green", shape=box, color=red, style=bold];
+      transition2 [label="turns red",   shape=box, color=red, style=bold];
+      
+      pool1       [label="red",       color=blue, style=bold];
+      pool2       [label="green",     color=blue, style=bold];
+
+      /* edges */
+      
+      pool1 -> transition1 [label="1"];
+      transition1 -> pool2 [label="2"];
+      pool1 -> transition2 [label="1"];
+      pool2 -> transition2 [label="3"];
+      transition2 -> pool1 [label="1"];
+} 

@@ -15,4 +15,6 @@ namespace petri {
 
     bool operator()();
   };
+
+  std::ostream& operator<<(std::ostream& os, const Network& n);
 }

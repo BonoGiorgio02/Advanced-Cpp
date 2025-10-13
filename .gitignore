@@ -1,4 +1,11 @@
-test-001
-test-002-001
-test-002-002
-test-003
+# Ignora tutti i file
+*
+
+# Non ignorare le directory (altrimenti Git non entra nelle cartelle)
+!*/
+
+# Non ignorare i file che hanno un'estensione (es. foo.txt, script.py)
+!*.*
+
+# (Opzionale) Non ignorare dotfiles importanti come .gitignore stesso
+!.* 
