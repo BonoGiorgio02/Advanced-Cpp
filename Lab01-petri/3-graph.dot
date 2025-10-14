@@ -1,0 +1,61 @@
+digraph Petri {
+
+  overlap=scale
+
+  /* nodes */1
+ transition0 [label="ph. 0 takes first", shape=box, color=red, style=bold];
+ transition1 [label="ph. 0 takes second", shape=box, color=red, style=bold];
+ transition2 [label="ph. 0 eats", shape=box, color=red, style=bold];
+ transition3 [label="ph. 1 takes first", shape=box, color=red, style=bold];
+ transition4 [label="ph. 1 takes second", shape=box, color=red, style=bold];
+ transition5 [label="ph. 1 eats", shape=box, color=red, style=bold];
+ transition6 [label="ph. 2 takes first", shape=box, color=red, style=bold];
+ transition7 [label="ph. 2 takes second", shape=box, color=red, style=bold];
+ transition8 [label="ph. 2 eats", shape=box, color=red, style=bold];
+
+  pool0 [label="fork 0", color=blue, style=bold];
+  pool3 [label="fork 1", color=blue, style=bold];
+  pool7 [label="fork 2", color=blue, style=bold];
+  pool1 [label="ph. 0 thinking", color=blue, style=bold];
+  pool2 [label="ph. 0 has one fork", color=blue, style=bold];
+  pool4 [label="ph. 0 has both forks", color=blue, style=bold];
+  pool5 [label="ph. 1 thinking", color=blue, style=bold];
+  pool6 [label="ph. 1 has one fork", color=blue, style=bold];
+  pool8 [label="ph. 1 has both forks", color=blue, style=bold];
+  pool9 [label="ph. 2 thinking", color=blue, style=bold];
+  pool10 [label="ph. 2 has one fork", color=blue, style=bold];
+  pool11 [label="ph. 2 has both forks", color=blue, style=bold];
+
+  /* edges */
+
+  pool0 -> transition0 [label="1"]
+  pool1 -> transition0 [label="1"]
+  transition0 -> pool2 [label="1"]
+  pool3 -> transition1 [label="1"]
+  pool2 -> transition1 [label="1"]
+  transition1 -> pool4 [label="1"]
+  pool4 -> transition2 [label="1"]
+  transition2 -> pool1 [label="1"]
+  transition2 -> pool0 [label="1"]
+  transition2 -> pool3 [label="1"]
+  pool3 -> transition3 [label="1"]
+  pool5 -> transition3 [label="1"]
+  transition3 -> pool6 [label="1"]
+  pool7 -> transition4 [label="1"]
+  pool6 -> transition4 [label="1"]
+  transition4 -> pool8 [label="1"]
+  pool8 -> transition5 [label="1"]
+  transition5 -> pool5 [label="1"]
+  transition5 -> pool3 [label="1"]
+  transition5 -> pool7 [label="1"]
+  pool7 -> transition6 [label="1"]
+  pool9 -> transition6 [label="1"]
+  transition6 -> pool10 [label="1"]
+  pool0 -> transition7 [label="1"]
+  pool10 -> transition7 [label="1"]
+  transition7 -> pool11 [label="1"]
+  pool11 -> transition8 [label="1"]
+  transition8 -> pool9 [label="1"]
+  transition8 -> pool7 [label="1"]
+  transition8 -> pool0 [label="1"]
+}

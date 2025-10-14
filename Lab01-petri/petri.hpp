@@ -5,5 +5,3 @@
 #include <petriPool.hpp>
 #include <petriTransition.hpp>
 #include <petriNetwork.hpp>
-
-

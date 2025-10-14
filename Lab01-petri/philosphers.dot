@@ -1,0 +1,10 @@
+digraph Petri {
+
+  overlap=scale
+
+  /* nodes */1
+
+
+  /* edges */
+
+}
