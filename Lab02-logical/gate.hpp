@@ -46,26 +46,28 @@ namespace gate {
   /**********************/
   /* test-001-003-wires */
   /**********************/
-  using ref_wire = std::pair<bool, std::list<wref_action>>;
+  using wire_type = std::tuple<bool, std::list<wref_action>>;
+  using ref_wire = std::shared_ptr<wire_type>;
 
-  inline ref_wire wire() {
+  inline auto wire() {
     // ref_wire wire {false, std::list<wref_action> {}};
-    return {false, std::list<wref_action>{}};
+    return std::make_shared<std::tuple<bool, std::list<wref_action>>>(false, std::list<wref_action>());
   }
 
-  inline bool value(const ref_wire wire){
-    return wire.first;
+  inline bool& value(const ref_wire wire){
+    return std::get<0>(*wire);
   }
 
-  inline void link(ref_wire& wire, const ref_action action){
-    wire.second.emplace_back(action);
+  inline void link(ref_wire wire, const ref_action action){
+    std::get<1>(*wire).emplace_back(action);
 
   }
 
-  inline void set(ref_wire& wire, const bool status){
-    if(wire.first != status){
-      wire.first = status;
-      for(auto it = wire.second.begin(); it != wire.second.end(); ++it)
+  inline void set(ref_wire wire, const bool status){
+    if(value(wire) != status){
+      value(wire) = status;
+      auto actions = std::get<1>(*wire);
+      for(auto it = actions.begin(); it != actions.end(); ++it)
         if(auto action = it->lock(); action)
           execute(it->lock());
     }
@@ -78,22 +80,57 @@ namespace gate {
   using ref_agenda = std::shared_ptr<agenda_type>;
 
   inline ref_agenda agenda(){
-    return std::make_shared<agenda_type>();
+    return std::make_shared<agenda_type>(0.0, std::multimap<double, std::tuple<ref_wire, bool>>());
   }
 
   inline void notify(ref_agenda agenda, ref_wire wire, bool status, double duration){
-
+    std::get<1>(*agenda).emplace(duration + std::get<0>(*agenda), std::make_tuple(wire, status));
   }
 
-  inline double now(ref_agenda agenda){
-
+  inline double& now(ref_agenda agenda){
+    return std::get<0>(*agenda);
   }
 
   inline bool next(ref_agenda agenda){
-
+    auto& requests = std::get<1>(*agenda);
+    if(requests.empty())
+      return false;
+    auto it = requests.begin();
+    auto [time, request] = *it;
+    requests.erase(it);
+    now(agenda) = time;
+    auto [w, status] = request;
+    set(w, status);
+    return true;
   }
 
+  /***********************/
+  /* test-002-002-agenda */
+  /***********************/
   inline void flush(ref_agenda agenda, int steps){
+    int n = 0;
+    while(n < steps && next(agenda)){++n;};
+  }
 
+
+  /***********************/
+  /* test-003-001-probes */
+  /***********************/
+  inline auto PROBE(ref_agenda agenda, std::string s, ref_wire wire){
+    auto print_wire = action([agenda, s, wire](){____display(now(agenda), s, value(wire));});
+    link(wire, print_wire);
+    return print_wire;
+  }
+
+  /********************/
+  /* test-003-002-and */
+  /********************/
+  inline auto AND(ref_agenda agenda, ref_wire a, ref_wire b, ref_wire c){
+    return "clk";
+  }
+
+  inline void flush(ref_agenda agenda){
+    while(next(agenda));
   }
 }
+
