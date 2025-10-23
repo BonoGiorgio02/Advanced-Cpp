@@ -125,12 +125,49 @@ namespace gate {
   /********************/
   /* test-003-002-and */
   /********************/
-  inline auto AND(ref_agenda agenda, ref_wire a, ref_wire b, ref_wire c){
-    return "clk";
+  inline auto AND(ref_agenda agenda, ref_wire w_in1, ref_wire w_in2, ref_wire w_out){
+    auto and_operator = action([agenda, w_in1, w_in2, w_out](){notify(agenda, w_out, value(w_in1) && value(w_in2), .5);});
+    link(w_in1, and_operator);
+    link(w_in2, and_operator);
+    execute(and_operator);
+    return and_operator;
   }
 
   inline void flush(ref_agenda agenda){
     while(next(agenda));
+  }
+
+  inline auto OR(ref_agenda agenda, ref_wire w_in1, ref_wire w_in2, ref_wire w_out){
+    auto or_operator = action([agenda, w_in1, w_in2, w_out](){notify(agenda, w_out, value(w_in1) || value(w_in2), .5);});
+    link(w_in1, or_operator);
+    link(w_in2, or_operator);
+    execute(or_operator);
+    return or_operator;
+  }
+
+  inline auto NOT(ref_agenda agenda, ref_wire w_in, ref_wire w_out){
+    auto not_operator = action([agenda, w_in, w_out](){notify(agenda, w_out, !value(w_in), .1);});
+    link(w_in, not_operator);
+    execute(not_operator);
+    return not_operator;
+  }
+
+  /********************/
+  /* test-003-002-and */
+  /********************/
+  inline auto XOR(ref_agenda agenda, ref_wire w_in1, ref_wire w_in2, ref_wire w_out) {
+    ref_wire w1 = wire();
+    ref_wire w2 = wire();
+    ref_wire w3 = wire();
+    ref_wire w4 = wire();
+
+    auto not_a = NOT(agenda, w_in1, w1);
+    auto not_b = NOT(agenda, w_in2, w2);
+    auto and_a = AND(agenda, w1, w_in2, w3);
+    auto and_b = AND(agenda, w2, w_in1, w4);
+    auto or_a = OR(agenda, w3, w4, w_out);
+    
+    return action([not_a, not_b, and_a, and_b, or_a](){});
   }
 }
 
