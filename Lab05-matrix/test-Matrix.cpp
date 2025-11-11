@@ -6,7 +6,7 @@ using namespace matrix;
 
 // Set the next macro to the question number you want to test
 
-#define QUESTION 4
+#define QUESTION 8
 
 int main(int argc, char** argv) {
   // Test matrix construction
