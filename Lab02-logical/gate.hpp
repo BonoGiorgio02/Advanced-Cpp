@@ -52,6 +52,9 @@ namespace gate {
   inline auto wire() {
     // ref_wire wire {false, std::list<wref_action> {}};
     return std::make_shared<std::tuple<bool, std::list<wref_action>>>(false, std::list<wref_action>());
+    // == std::make_shared<wire_type>(false, std::list<wref_action>);
+    // == std::make_shared<std::tuple<bool, std::list<wref_action>>>(std::tuple<bool, std::list<wref_action>>(false, std::list<wref_action>()));
+    // but less efficient
   }
 
   inline bool& value(const ref_wire wire){
