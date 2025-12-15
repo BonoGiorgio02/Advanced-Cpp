@@ -32,7 +32,7 @@ namespace gate {
   /************************/
   using action_type = std::function<void ()>;
   using ref_action = std::shared_ptr<action_type>;
-  // using wref_action = std::weak_ptr<action_type>; // ok, but prefer the following, it is nicer.
+  // using wref_action = std::weak_ptr<ref_action>; // ok, but prefer the following, it is nicer.
   using wref_action = ref_action::weak_type;
 
   inline ref_action action(action_type action) {
